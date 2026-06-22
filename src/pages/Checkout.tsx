@@ -12,7 +12,7 @@ export default function Checkout() {
     e.preventDefault();
     setIsProcessing(true);
     // Open Razorpay payment gateway
-    window.open('https://razorpay.me/@ayushkumarmallick', '_blank');
+    window.open('https://razorpay.me/@Plusedigiart', '_blank');
 
     setTimeout(() => {
       cart.forEach(async (item) => {
