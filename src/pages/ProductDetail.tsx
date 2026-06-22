@@ -43,7 +43,7 @@ export default function ProductDetail() {
         <div className="flex flex-col">
           <div className="w-full aspect-[4/5] md:aspect-square bg-gray-100 rounded-3xl overflow-hidden shadow-2xl shadow-cyan-900/5">
             <img
-              src={product.image}
+              src={product.image || 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop'}
               alt={product.title}
               className="w-full h-full object-cover"
             />

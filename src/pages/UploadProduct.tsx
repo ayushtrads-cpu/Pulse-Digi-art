@@ -69,16 +69,47 @@ export default function UploadProduct() {
       return;
     }
 
-    if (file.size > 2 * 1024 * 1024) {
-      setError('Image size exceeds 2MB limit.');
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size exceeds 5MB limit.');
       if (fileInputRef.current) fileInputRef.current.value = '';
       setImageBase64('');
       return;
     }
 
     const reader = new FileReader();
-    reader.onload = () => {
-      setImageBase64(reader.result as string);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        const MAX_HEIGHT = 800;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+          setImageBase64(dataUrl);
+        } else {
+          setImageBase64(event.target?.result as string);
+        }
+      };
+      img.src = event.target?.result as string;
     };
     reader.readAsDataURL(file);
   };
@@ -128,7 +159,7 @@ export default function UploadProduct() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Image (Max 2MB)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Upload Image (Max 5MB)</label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <ImageIcon className="h-5 w-5 text-gray-400" />

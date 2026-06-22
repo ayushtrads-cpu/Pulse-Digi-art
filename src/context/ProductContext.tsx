@@ -23,7 +23,11 @@ export function ProductProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    localStorage.setItem('pulse_products', JSON.stringify(products));
+    try {
+      localStorage.setItem('pulse_products', JSON.stringify(products));
+    } catch (e) {
+      console.error('Failed to save products to local storage. Quota may be exceeded.', e);
+    }
   }, [products]);
 
   const addProduct = (product: Product) => {

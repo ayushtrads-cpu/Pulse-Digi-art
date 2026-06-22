@@ -1,20 +1,35 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Palette } from 'lucide-react';
+import { Palette, AlertCircle } from 'lucide-react';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
-  const { login } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const { login, signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError(null);
     if (emailInput && passwordInput) {
-      login(emailInput);
-      navigate('/');
+      if (isLogin) {
+        const result = login(emailInput, passwordInput);
+        if (result.success) {
+          navigate('/');
+        } else {
+          setError(result.error || 'Failed to login');
+        }
+      } else {
+        const result = signup(emailInput, passwordInput);
+        if (result.success) {
+          navigate('/');
+        } else {
+          setError(result.error || 'Failed to sign up');
+        }
+      }
     }
   };
 
@@ -32,7 +47,15 @@ export default function Auth() {
             {isLogin ? "Enter your details to access your account." : "Sign up to start collecting digital art."}
           </p>
         </div>
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        
+        {error && (
+          <div className="bg-red-50 text-red-600 p-3 rounded-lg flex items-center text-sm">
+            <AlertCircle className="w-4 h-4 mr-2" />
+            {error}
+          </div>
+        )}
+
+        <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
               <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
@@ -80,7 +103,10 @@ export default function Auth() {
 
         <div className="text-center mt-4">
           <button
-            onClick={() => setIsLogin(!isLogin)}
+            onClick={() => {
+              setIsLogin(!isLogin);
+              setError(null);
+            }}
             className="text-sm text-cyan-600 hover:text-cyan-500 font-medium transition-colors"
           >
             {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}

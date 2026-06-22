@@ -21,7 +21,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div className="group relative flex flex-col bg-white overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-transparent hover:border-cyan-100">
       <Link to={`/product/${product.id}`} className="block relative aspect-square overflow-hidden bg-gray-100">
         <img
-          src={product.image}
+          src={product.image || 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop'}
           alt={product.title}
           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 ease-out"
         />
