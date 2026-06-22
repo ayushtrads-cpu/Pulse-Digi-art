@@ -14,11 +14,36 @@ export default function Checkout() {
     // Open Razorpay payment gateway
     window.open('https://razorpay.me/@ayushkumarmallick', '_blank');
 
+    cart.forEach(async (item) => {
+      try {
+        const response = await fetch(item.image || '');
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${item.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_original.jpg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error('Failed to download image:', error);
+        // Fallback
+        const a = document.createElement('a');
+        a.href = item.image || '';
+        a.download = `${item.title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_original.jpg`;
+        a.target = '_blank';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+    });
+
     setTimeout(() => {
       setIsProcessing(false);
       clearCart();
       navigate('/', { replace: true });
-    }, 1000);
+    }, 2000);
   };
 
   if (cart.length === 0) {
