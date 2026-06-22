@@ -12,7 +12,7 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined);
 export function ProductProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(() => {
     try {
-      const saved = localStorage.getItem('pulse_products');
+      const saved = localStorage.getItem('pulse_products_v2');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (parsed.length > 0) return parsed;
@@ -25,7 +25,7 @@ export function ProductProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      localStorage.setItem('pulse_products', JSON.stringify(products));
+      localStorage.setItem('pulse_products_v2', JSON.stringify(products));
     } catch (e) {
       console.error('Failed to save products to local storage. Quota may be exceeded.', e);
     }
