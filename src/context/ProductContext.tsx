@@ -14,7 +14,8 @@ export function ProductProvider({ children }: { children: ReactNode }) {
     try {
       const saved = localStorage.getItem('pulse_products');
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed.length > 0) return parsed;
       }
     } catch (error) {
       console.error('Failed to parse products from local storage:', error);
