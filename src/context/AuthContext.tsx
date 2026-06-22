@@ -1,18 +1,33 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
-  email: string;
-  setEmail: (email: string) => void;
+  email: string | null;
+  isAuthenticated: boolean;
+  login: (email: string) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Defaulting to the user's email for convenience, but can be changed to test the restriction
-  const [email, setEmail] = useState<string>('ayushtrads@gmail.com');
+  const [email, setEmail] = useState<string | null>(() => {
+    return localStorage.getItem('pulse_auth_email');
+  });
+
+  const isAuthenticated = !!email;
+
+  const login = (newEmail: string) => {
+    setEmail(newEmail);
+    localStorage.setItem('pulse_auth_email', newEmail);
+  };
+
+  const logout = () => {
+    setEmail(null);
+    localStorage.removeItem('pulse_auth_email');
+  };
 
   return (
-    <AuthContext.Provider value={{ email, setEmail }}>
+    <AuthContext.Provider value={{ email, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

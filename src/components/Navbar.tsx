@@ -1,14 +1,20 @@
-import { ShoppingCart, Menu, X } from 'lucide-react';
+import { ShoppingCart, Menu, X, LogOut } from 'lucide-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const { cartCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { email } = useAuth();
+  const { email, logout } = useAuth();
   const isOwner = email === 'ayushtrads@gmail.com';
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth');
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-cyan-100">
@@ -31,7 +37,7 @@ export default function Navbar() {
                 Upload Work
               </Link>
             )}
-            <div className="flex items-center">
+            <div className="flex items-center space-x-4">
               <Link to="/cart" className="relative p-2 text-gray-600 hover:text-cyan-500 transition-colors">
                 <ShoppingCart className="w-5 h-5" />
                 {cartCount > 0 && (
@@ -40,6 +46,16 @@ export default function Navbar() {
                   </span>
                 )}
               </Link>
+              <div className="flex items-center space-x-3 border-l pl-4 border-gray-200">
+                <span className="text-xs text-gray-500 font-mono truncate max-w-[150px] block" title={email || ''}>{email}</span>
+                <button 
+                  onClick={handleLogout}
+                  className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                  title="Logout"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -83,6 +99,19 @@ export default function Navbar() {
                 Upload Work
               </Link>
             )}
+            <div className="pt-4 mt-2 border-t border-gray-100">
+              <div className="px-3 py-2 text-sm text-gray-500 truncate">{email}</div>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  handleLogout();
+                }}
+                className="w-full text-left px-3 py-2 text-base font-medium text-red-600 hover:bg-red-50 rounded-md flex items-center gap-2"
+              >
+                <LogOut className="w-4 h-4" />
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       )}
