@@ -31,9 +31,9 @@ export default function Cart() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         {/* Cart Items */}
         <div className="lg:col-span-8 space-y-6">
-          {cart.map((item) => (
+          {cart.map((item, index) => (
             <div
-              key={item.id}
+              key={item.id || `cart-${index}`}
               className="flex flex-col sm:flex-row items-start sm:items-center p-4 bg-white border border-gray-100 rounded-2xl shadow-sm gap-6"
             >
               <Link to={`/product/${item.id}`} className="block w-24 h-24 sm:w-32 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-gray-100">

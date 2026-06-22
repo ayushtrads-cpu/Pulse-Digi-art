@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate, Link } from 'react-router-dom';
 import { CreditCard, ArrowLeft, Lock } from 'lucide-react';
@@ -198,8 +198,8 @@ export default function Checkout() {
              <h2 className="text-xl font-bold text-gray-900 mb-6">In your cart</h2>
              
              <div className="space-y-4 mb-6 max-h-[400px] overflow-y-auto pr-2">
-               {cart.map((item) => (
-                 <div key={item.id} className="flex gap-4 items-center">
+               {cart.map((item, index) => (
+                 <div key={item.id || `checkout-${index}`} className="flex gap-4 items-center">
                     <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-gray-200">
                       <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
                     </div>
