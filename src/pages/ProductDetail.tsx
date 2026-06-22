@@ -46,6 +46,9 @@ export default function ProductDetail() {
               src={product.image || 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop'}
               alt={product.title}
               className="w-full h-full object-cover"
+              onError={(e) => {
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop';
+              }}
             />
           </div>
         </div>

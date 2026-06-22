@@ -3,14 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
 import { Upload, Image as ImageIcon } from 'lucide-react';
 import { CATEGORIES } from '../data/products';
-import { useAuth } from '../context/AuthContext';
 
 export default function UploadProduct() {
   const { addProduct } = useProducts();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { email } = useAuth();
-  const isOwner = email === 'ayushtrads@gmail.com';
 
   const [formData, setFormData] = useState({
     title: '',
@@ -21,21 +18,6 @@ export default function UploadProduct() {
   });
   const [imageBase64, setImageBase64] = useState<string>('');
   const [error, setError] = useState<string>('');
-
-  if (!isOwner) {
-    return (
-      <div className="max-w-3xl mx-auto px-4 py-20 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h2>
-        <p className="text-gray-600">Only the owner can upload new artwork.</p>
-        <button 
-          onClick={() => navigate('/')}
-          className="mt-8 px-6 py-3 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors"
-        >
-          Return Home
-        </button>
-      </div>
-    );
-  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

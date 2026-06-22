@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useProducts } from '../context/ProductContext';
 import ProductCard from '../components/ProductCard';
-import { CATEGORIES } from '../data/products';
+import { CATEGORIES, initialProducts } from '../data/products';
 
 export default function Home() {
   const { products } = useProducts();
@@ -10,8 +10,9 @@ export default function Home() {
   const categories = ['All', ...CATEGORIES];
 
   const filteredProducts = useMemo(() => {
-    if (selectedCategory === 'All') return products;
-    return products.filter((p) => p.category === selectedCategory);
+    const list = products.length > 0 ? products : initialProducts;
+    if (selectedCategory === 'All') return list;
+    return list.filter((p) => p.category === selectedCategory);
   }, [selectedCategory, products]);
 
   return (
@@ -67,12 +68,6 @@ export default function Home() {
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
-        
-        {filteredProducts.length === 0 && (
-          <div className="py-20 text-center text-gray-500">
-            No products found in this category.
-          </div>
-        )}
       </section>
     </div>
   );
