@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 
 export default function Footer() {
-  const { email, setEmail } = useAuth();
-  
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -49,19 +46,10 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="mt-12 pt-8 border-t border-gray-200 flex justify-between items-center">
           <p className="text-xs text-gray-400">
             &copy; {new Date().getFullYear()} Pulse digi art. All rights reserved.
           </p>
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-400">Test Account:</span>
-            <input 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="text-xs px-2 py-1 bg-white border border-gray-200 rounded text-gray-600 outline-none focus:border-cyan-500 w-48"
-            />
-          </div>
         </div>
       </div>
     </footer>

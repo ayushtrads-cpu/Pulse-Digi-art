@@ -2,10 +2,13 @@ import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const { cartCount } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { email } = useAuth();
+  const isOwner = email === 'ayushtrads@gmail.com';
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-cyan-100">
@@ -23,9 +26,11 @@ export default function Navbar() {
             <Link to="/" className="text-sm font-medium text-gray-600 hover:text-cyan-500 transition-colors">
               Home
             </Link>
-            <Link to="/upload" className="text-sm font-medium text-gray-600 hover:text-cyan-500 transition-colors">
-              Upload Work
-            </Link>
+            {isOwner && (
+              <Link to="/upload" className="text-sm font-medium text-gray-600 hover:text-cyan-500 transition-colors">
+                Upload Work
+              </Link>
+            )}
             <div className="flex items-center">
               <Link to="/cart" className="relative p-2 text-gray-600 hover:text-cyan-500 transition-colors">
                 <ShoppingCart className="w-5 h-5" />
@@ -69,13 +74,15 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <Link
-              to="/upload"
-              onClick={() => setIsMenuOpen(false)}
-              className="block px-3 py-2 text-base font-medium text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-md"
-            >
-              Upload Work
-            </Link>
+            {isOwner && (
+              <Link
+                to="/upload"
+                onClick={() => setIsMenuOpen(false)}
+                className="block px-3 py-2 text-base font-medium text-gray-800 hover:bg-cyan-50 hover:text-cyan-600 rounded-md"
+              >
+                Upload Work
+              </Link>
+            )}
           </div>
         </div>
       )}
