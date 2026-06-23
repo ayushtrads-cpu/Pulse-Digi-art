@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react';
 import { useProducts } from '../context/ProductContext';
 import ProductCard from '../components/ProductCard';
 import { CATEGORIES, initialProducts } from '../data/products';
+import { Sparkles, Plus, Upload } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function Home() {
   const { products } = useProducts();
@@ -63,11 +65,27 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8">
-          {filteredProducts.map((product, index) => (
-            <ProductCard key={product.id || `product-${index}`} product={product} />
-          ))}
-        </div>
+        {filteredProducts.length === 0 ? (
+          <div className="text-center py-20 px-6 max-w-xl mx-auto bg-gray-50/50 border border-dashed border-gray-200 rounded-3xl">
+            <Sparkles className="w-12 h-12 text-cyan-400 mx-auto mb-4" />
+            <h3 className="text-xl font-bold text-gray-900 mb-2">No masterpieces found</h3>
+            <p className="text-gray-500 mb-6 text-sm">
+              Be the first to publish a high-fidelity digital artwork for collectors worldwide.
+            </p>
+            <Link
+              to="/upload"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 text-white font-bold rounded-full hover:bg-cyan-600 transition-all hover:shadow-lg hover:shadow-cyan-500/20 active:scale-95"
+            >
+              <Upload className="w-4 h-4" /> Upload Artwork
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8">
+            {filteredProducts.map((product, index) => (
+              <ProductCard key={product.id || `product-${index}`} product={product} />
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

@@ -1,12 +1,12 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
 import { useCart } from '../context/CartContext';
-import { ArrowLeft, ShoppingCart, Check } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Check, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
-  const { products } = useProducts();
+  const { products, removeProduct } = useProducts();
   const product = products.find((p) => p.id === id);
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
@@ -99,6 +99,18 @@ export default function ProductDetail() {
               Buy Now
             </button>
           </div>
+          
+          <button
+            onClick={() => {
+              if (window.confirm(`Are you sure you want to remove "${product.title}"?`)) {
+                removeProduct(product.id);
+                navigate('/');
+              }
+            }}
+            className="mt-4 flex items-center justify-center gap-2 py-3.5 px-6 rounded-full text-sm font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 transition-all border border-rose-100 active:scale-98"
+          >
+            <Trash2 className="w-4 h-4" /> Remove Artwork from Catalog
+          </button>
           
           <div className="mt-12 pt-8 border-t border-gray-100 space-y-4 text-sm text-gray-500">
              <p className="flex items-center gap-2">

@@ -10,6 +10,7 @@ import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import UploadProduct from './pages/UploadProduct';
 import { CartProvider } from './context/CartContext';
 import { ProductProvider } from './context/ProductContext';
 
@@ -26,6 +27,7 @@ export default function App() {
                 <Route path="/product/:id" element={<ProductDetail />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/upload" element={<UploadProduct />} />
               </Routes>
             </main>
             <Footer />

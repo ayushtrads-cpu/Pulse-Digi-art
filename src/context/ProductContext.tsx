@@ -15,7 +15,19 @@ export function ProductProvider({ children }: { children: ReactNode }) {
       const saved = localStorage.getItem('pulse_products_v2');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (parsed.length > 0) return parsed;
+        if (Array.isArray(parsed)) {
+          // Programmatically filter out any product referencing "Qin Shi Huang" as requested
+          return parsed.filter((p: Product) => {
+            const textToSearch = `${p.title || ''} ${p.description || ''} ${p.longDescription || ''}`.toLowerCase();
+            const isQinShiHuang = 
+              textToSearch.includes('qin shi huang') || 
+              textToSearch.includes('秦始皇') || 
+              textToSearch.includes('shinshikō') || 
+              textToSearch.includes('shinshiko') || 
+              textToSearch.includes('チンシーファン');
+            return !isQinShiHuang;
+          });
+        }
       }
     } catch (error) {
       console.error('Failed to parse products from local storage:', error);

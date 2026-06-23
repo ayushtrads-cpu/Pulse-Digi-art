@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingBag } from 'lucide-react';
+import { ShoppingBag, Trash2 } from 'lucide-react';
 import { Product } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useProducts } from '../context/ProductContext';
@@ -13,23 +13,40 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
   const { removeProduct } = useProducts();
 
+  const handleRemove = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (window.confirm(`Are you sure you want to remove "${product.title}"?`)) {
+      removeProduct(product.id);
+    }
+  };
+
   return (
     <div className="group relative flex flex-col bg-white overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-transparent hover:border-cyan-100">
-      <Link to={`/product/${product.id}`} className="block relative aspect-square overflow-hidden bg-gray-100">
-        <img
-          src={product.image || 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop'}
-          alt={product.title}
-          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 ease-out"
-          onError={(e) => {
-            e.currentTarget.src = 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop';
-          }}
-        />
-        <div className="absolute top-4 left-4">
+      <div className="relative aspect-square overflow-hidden bg-gray-100">
+        <Link to={`/product/${product.id}`} className="block w-full h-full">
+          <img
+            src={product.image || 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop'}
+            alt={product.title}
+            className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500 ease-out"
+            onError={(e) => {
+              e.currentTarget.src = 'https://images.unsplash.com/photo-1542840410-3092f99611a3?q=80&w=800&auto=format&fit=crop';
+            }}
+          />
+        </Link>
+        <div className="absolute top-4 left-4 z-10 pointer-events-none">
           <span className="inline-block px-3 py-1 text-xs font-semibold tracking-wider text-cyan-600 bg-white/90 backdrop-blur-sm rounded-full">
             {product.category}
           </span>
         </div>
-      </Link>
+        <button
+          onClick={handleRemove}
+          className="absolute top-4 right-4 z-10 p-2 text-rose-600 bg-white/95 hover:bg-rose-500 hover:text-white rounded-full backdrop-blur-sm opacity-100 transition-all duration-300 border border-rose-100 shadow-sm active:scale-95"
+          title={`Remove ${product.title}`}
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
+      </div>
 
       <div className="p-3 sm:p-5 flex flex-col flex-grow">
         <Link to={`/product/${product.id}`} className="block mb-1 sm:mb-2">
